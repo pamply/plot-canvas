@@ -1,0 +1,69 @@
+<html>
+
+  <head></head>
+  <body>
+
+    <canvas id="canvas" width="500px" height="500px"></canvas>
+  </body>
+  <script type="text/javascript">
+      var canvas = document.getElementById("canvas");
+      var context = canvas.getContext("2d");
+
+      var width = canvas.width;
+      var height = canvas.height;
+      var rows = 10;
+      var rowSize = width/(rows-1);
+      var data = [];
+
+      drawY();
+      drawX();
+      context.save();
+
+      setInterval(drawingGraph, 1000);
+
+      function drawY() {
+        context.strokeStyle = "blue";
+        context.lineWidth = 5;
+        context.beginPath();
+        context.moveTo(0, 0);
+        context.lineTo(0, height);
+        context.stroke();
+      }
+
+      function drawX() {
+        context.strokeStyle = "green";
+        context.lineWidth = 5;
+        context.beginPath();
+        context.moveTo(0, height);
+        context.lineTo(width, height);
+        context.stroke();
+      }
+
+      function drawingGraph() {
+
+        if (data.length == rows) {
+          context.clearRect(1, 0, width, height-1);
+          data.shift();
+          drawX();
+          drawY();
+        }
+        data.push(Math.ceil(Math.random()*height));
+
+        dataToShow = data;
+        data.map(function(num, index, array) {
+          if (index === 0) return;
+
+          context.strokeStyle = "red";
+          var y = num;
+          var x =  rowSize;
+          context.lineWidth = 1;
+          context.beginPath();
+          context.moveTo(width - (rowSize*--index), array[index]);
+          context.lineTo(width - (rowSize*++index), num);
+          context.stroke();
+        })
+      }
+
+
+    </script>
+</html>
